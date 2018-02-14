@@ -1,0 +1,9 @@
+[Core]
+Name = Dog
+Module = dog
+
+[Python]
+Version = 3
+
+[Documentation]
+Description = Retrieve random dog images
