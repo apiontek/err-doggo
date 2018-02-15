@@ -11,21 +11,23 @@ class Dog(BotPlugin):
 
     BASE_URL = 'https://dog.ceo/api'
 
-    breeds = None
+    breeds = []
 
     @botcmd(split_args_with=' ')
     def doggo(self, msg, args):
-        url = None
+        """
+           Retrieve a random dog image, optionally specifying a breed
+        """
+        url = '{}/breeds/image/random'.format(self.BASE_URL)
 
-        if len(args) > 0:
+        if len(args) > 0 and args[0]:
             breed = args[0]
             if not self.breeds:
-                self.reload_breeds(self, msg, args)
+                self.reloadbreeds(msg, args)
             if breed in self.breeds:
                 url = '{}/breed/{}/images/random'.format(self.BASE_URL, breed)
-
-        if not url:
-            url = '{}/breeds/image/random'.format(self.BASE_URL)
+            else:
+                return 'Breed not found: {}. List breeds with !listbreeds'.format(breed)
 
         try:
             resp = requests.get(url)
@@ -38,21 +40,27 @@ class Dog(BotPlugin):
 
 
     @botcmd
-    def breeds(self, msg, args):
+    def listbreeds(self, msg, args):
+        """
+           List available breeds for use in the random image retriever
+        """
         if not self.breeds:
-            self.reload_breeds(self, msg, args)
+            self.reloadbreeds(msg, args)
             if not self.breeds:
                 return 'Unable to load breeds list'
 
         # Send the output to the user to prevent spamming the channel
-        direct_to_user = self.build_identifier(str(mess.frm.nick))
+        direct_to_user = self.build_identifier(str(msg.frm.nick))
 
         for breed in sorted(self.breeds):
             self.send(direct_to_user, breed)
 
 
     @botcmd(admin_only=True)
-    def reload_breeds(self, msg, args):
+    def reloadbreeds(self, msg, args):
+        """
+           Reloads the list of breeds currently available
+        """
         url = '{}/breeds/list'.format(self.BASE_URL)
 
         try:
