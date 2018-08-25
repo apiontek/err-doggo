@@ -1,9 +1,7 @@
-
 import logging
-import json
-
-from errbot import botcmd, BotPlugin
 import requests
+import json
+from errbot import botcmd, BotPlugin
 
 
 class Doggo(BotPlugin):
@@ -11,7 +9,7 @@ class Doggo(BotPlugin):
 
     BASE_URL = 'https://dog.ceo/api'
 
-    breeds = []
+    breeds = {}
 
     @botcmd(split_args_with=' ')
     def doggo(self, msg, args):
@@ -24,7 +22,7 @@ class Doggo(BotPlugin):
             breed = args[0]
             if not self.breeds:
                 self.reloadbreeds(msg, args)
-            if breed in self.breeds:
+            if breed in self.breeds.keys():
                 url = '{}/breed/{}/images/random'.format(self.BASE_URL, breed)
             else:
                 return 'Breed not found: {}. List breeds with !listbreeds'.format(breed)
@@ -52,7 +50,7 @@ class Doggo(BotPlugin):
         # Send the output to the user to prevent spamming the channel
         direct_to_user = self.build_identifier(str(msg.frm))
 
-        for breed in sorted(self.breeds):
+        for breed in sorted(self.breeds.keys()):
             self.send(direct_to_user, breed)
 
 
@@ -74,4 +72,5 @@ class Doggo(BotPlugin):
         if not isinstance(data, list):
             return 'Unable to load breeds list'
 
-        self.breeds = data
+        for breed in data:
+            self.breeds[breed] = []
