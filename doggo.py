@@ -21,11 +21,26 @@ class Doggo(BotPlugin):
         if len(args) > 0 and args[0]:
             breed = args[0]
             if not self.breeds:
+                args.append('calledbyfunction')
                 self.reloadbreeds(msg, args)
             if breed in self.breeds.keys():
                 url = '{}/breed/{}/images/random'.format(self.BASE_URL, breed)
             else:
                 return 'Breed not found: {}. List breeds with !listbreeds'.format(breed)
+
+        # But what if user passed us a sub-breed?
+        if len(args) > 1 and args[1]:
+            subbreed = args[1]
+            if len(self.breeds[breed]) == 0:
+                if 'calledbyfunction' not in args:
+                    args.append('calledbyfunction')
+                self.reloadsubbreeds(msg, args)
+                if len(self.breeds[breed]) == 0:
+                    return 'No sub-breeds available for {}, so we cannot use {}.'.format(breed, subbreed)
+            if subbreed in self.breeds[breed]:
+                url = '{}/breed/{}/{}/images/random'.format(self.BASE_URL, breed, subbreed)
+            else:
+                return 'Sub-breed of {} not found: {}. List sub-breeds with !listsubbreeds'.format(breed, subbreed)
 
         try:
             resp = requests.get(url)
