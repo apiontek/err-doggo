@@ -14,7 +14,7 @@ class Doggo(BotPlugin):
     @botcmd(split_args_with=' ')
     def doggo(self, msg, args):
         """
-           Retrieve a random dog image, optionally specifying a breed
+           Retrieve a random dog image, optionally specifying a breed, and optionally a sub-breed
         """
         url = '{}/breeds/image/random'.format(self.BASE_URL)
 
