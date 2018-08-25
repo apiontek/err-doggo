@@ -37,12 +37,13 @@ class Doggo(BotPlugin):
         return resp.json()['message']
 
 
-    @botcmd
+    @botcmd(split_args_with=' ')
     def listbreeds(self, msg, args):
         """
            List available breeds for use in the random image retriever
         """
         if not self.breeds:
+            args.append('calledbyfunction')
             self.reloadbreeds(msg, args)
             if not self.breeds:
                 return 'Unable to load breeds list'
@@ -53,8 +54,7 @@ class Doggo(BotPlugin):
         for breed in sorted(self.breeds.keys()):
             self.send(direct_to_user, breed)
 
-
-    @botcmd(admin_only=True)
+    @botcmd(admin_only=True,split_args_with=' ')
     def reloadbreeds(self, msg, args):
         """
            Reloads the list of breeds currently available
@@ -74,3 +74,8 @@ class Doggo(BotPlugin):
 
         for breed in data:
             self.breeds[breed] = []
+
+        if 'calledbyfunction' not in args:
+            # Tell user command was successful
+            direct_to_user = self.build_identifier(str(msg.frm))
+            self.send(direct_to_user, "Breed list successfully loaded")
