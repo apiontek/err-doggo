@@ -1,6 +1,6 @@
 [Core]
-Name = Dog
-Module = dog
+Name = Doggo
+Module = doggo
 
 [Python]
 Version = 3

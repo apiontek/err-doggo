@@ -6,7 +6,7 @@ from errbot import botcmd, BotPlugin
 import requests
 
 
-class Dog(BotPlugin):
+class Doggo(BotPlugin):
     """Get random dog image URLs"""
 
     BASE_URL = 'https://dog.ceo/api'
