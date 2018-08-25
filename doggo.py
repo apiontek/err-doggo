@@ -97,7 +97,7 @@ class Doggo(BotPlugin):
     @botcmd(split_args_with=' ')
     def listsubbreeds(self, msg, args):
         """
-           List available sub-breeds of a breed for use in the random image retriever
+           List available sub-breeds of a user-supplied breed for use in the random image retriever
         """
         if len(args) > 0 and args[0]:
             breed = args[0]
@@ -133,7 +133,7 @@ class Doggo(BotPlugin):
             if not self.breeds:
                 self.reloadbreeds(msg, args)
                 if not self.breeds:
-                    return 'Unable to load sub-breeds list'
+                    return 'Unable to load breeds list'
             if breed in self.breeds.keys():
                 url = '{}/breed/{}/list'.format(self.BASE_URL, breed)
             else:
@@ -157,3 +157,27 @@ class Doggo(BotPlugin):
             # Tell user command was successful
             direct_to_user = self.build_identifier(str(msg.frm))
             self.send(direct_to_user, "Sub-breed list successfully loaded")
+
+    @botcmd(split_args_with=' ')
+    def listallbreeds(self, msg, args):
+        """
+           List all breeds & sub-breeds for use in the random image retriever
+        """
+        if not self.breeds:
+            args.append('calledbyfunction')
+            self.reloadbreeds(msg, args)
+            if not self.breeds:
+                return 'Unable to load breeds list'
+
+        direct_to_user = self.build_identifier(str(msg.frm))
+
+        for breed in self.breeds:
+            if len(self.breeds[breed]) == 0:
+                args[0] = breed
+                args[1] = 'calledbyfunction'
+                self.reloadsubbreeds(msg, args)
+                if len(self.breeds[breed]) == 0:
+                    self.send(direct_to_user, breed)
+                else:
+                    for subbreed in self.breeds[breed]:
+                        self.send(direct_to_user, breed + " " + subbreed)
