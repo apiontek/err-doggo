@@ -50,7 +50,7 @@ class Doggo(BotPlugin):
                 return 'Unable to load breeds list'
 
         # Send the output to the user to prevent spamming the channel
-        direct_to_user = self.build_identifier(str(msg.frm.nick))
+        direct_to_user = self.build_identifier(str(msg.frm))
 
         for breed in sorted(self.breeds):
             self.send(direct_to_user, breed)
