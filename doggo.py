@@ -5,7 +5,7 @@ from errbot import botcmd, BotPlugin
 
 
 class Doggo(BotPlugin):
-    """Get random dog image URLs"""
+    """Fetch random dog image URLs"""
 
     BASE_URL = 'https://dog.ceo/api'
 
@@ -14,7 +14,7 @@ class Doggo(BotPlugin):
     @botcmd(split_args_with=' ')
     def doggo(self, msg, args):
         """
-           Retrieve a random dog image, optionally specifying a breed, and optionally a sub-breed
+           Fetches a random dog image, optionally of given <breed>, or of given <breed> <sub-breed>
         """
         url = '{}/breeds/image/random'.format(self.BASE_URL)
 
@@ -54,7 +54,7 @@ class Doggo(BotPlugin):
     @botcmd(split_args_with=' ')
     def listbreeds(self, msg, args):
         """
-           List available breeds for use in the random image retriever
+           DMs the user the breeds available for use in the random image fetcher
         """
         if not self.breeds:
             args.append('calledbyfunction')
@@ -71,7 +71,7 @@ class Doggo(BotPlugin):
     @botcmd(admin_only=True,split_args_with=' ')
     def reloadbreeds(self, msg, args):
         """
-           Reloads the list of breeds currently available
+           Admin-only; forces reload of the breeds currently available
         """
         url = '{}/breeds/list'.format(self.BASE_URL)
 
@@ -97,7 +97,7 @@ class Doggo(BotPlugin):
     @botcmd(split_args_with=' ')
     def listsubbreeds(self, msg, args):
         """
-           List available sub-breeds of a user-supplied breed for use in the random image retriever
+           DMs the user the sub-breeds available for a given `<breed>`
         """
         if len(args) > 0 and args[0]:
             breed = args[0]
@@ -126,7 +126,7 @@ class Doggo(BotPlugin):
     @botcmd(admin_only=True, split_args_with=' ')
     def reloadsubbreeds(self, msg, args):
         """
-           Reloads the list of sub-breeds currently available for a given breed
+           Admin-only; forces reload of the sub-breeds available for the given <breed>
         """
         if len(args) > 0 and args[0]:
             breed = args[0]
@@ -161,7 +161,7 @@ class Doggo(BotPlugin):
     @botcmd(split_args_with=' ')
     def listallbreeds(self, msg, args):
         """
-           List all breeds & sub-breeds for use in the random image retriever
+           DMs the user the list of all breeds & sub-breeds available for use in the random image fetcher
         """
         if not self.breeds:
             args.append('calledbyfunction')
