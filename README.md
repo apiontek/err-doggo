@@ -1,6 +1,6 @@
 # Doggo
 
-This is a plugin for [Errbot](http://errbot.io/) that fetches random dog images from the [dog.ceo API$
+This is a plugin for [Errbot](http://errbot.io/) that fetches random dog images from the [dog.ceo API](https://dog.ceo/dog-api/)
 
 Users can optionally specify a breed, and, also optionally, a sub-breed:
 
