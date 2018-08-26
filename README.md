@@ -4,7 +4,7 @@ This is a plugin for [Errbot](http://errbot.io/) that fetches random dog images 
 
 Users can optionally specify a breed, and, also optionally, a sub-breed:
 
-## 
+## Usage:
 - `!doggo` Fetches a random dog image
 - `!doggo <breed>` fetches a random dog image of `<breed>` specified
 - `!doggo <breed> <sub-breed>` fetches a random dog image of `<breed>` & `<sub-breed>` specified
