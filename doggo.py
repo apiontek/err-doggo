@@ -6,6 +6,7 @@ from errbot import botcmd, BotPlugin
 
 class Doggo(BotPlugin):
     """Fetch random dog image URLs"""
+    min_err_version = '3.0.0' # Optional, but recommended
 
     BASE_URL = 'https://dog.ceo/api'
 
@@ -140,7 +141,7 @@ class Doggo(BotPlugin):
                 return 'Breed not found: {}. List breeds with !listbreeds'.format(breed)
         else:
             return 'Please tell me the breed for which you want sub-breeds, like: *!reloadsubbreeds terrier*'
-        
+
         try:
             resp = requests.get(url)
             resp.raise_for_status()
@@ -151,7 +152,7 @@ class Doggo(BotPlugin):
         data = resp.json()['message']
         if not isinstance(data, list):
             return 'Unable to load sub-breeds list'
-        
+
         self.breeds[breed] = data
         if 'calledbyfunction' not in args:
             # Tell user command was successful
